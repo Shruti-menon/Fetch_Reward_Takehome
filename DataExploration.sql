@@ -84,3 +84,54 @@ WHERE  t.FINAL_SALE is not null and t.FINAL_QUANTITY <> "zero" and t.BARCODE is 
 GROUP By RECEIPT_ID
 HAVING cnt>1
 ORDER By cnt DESC
+
+--CTE (Info table with all the relevant transactions and products, final table)
+WITH info AS (
+    SELECT t.*, p.*
+	FROM TRANSACTION_TAKEHOME as t
+	INNER JOIN PRODUCTS_TAKEHOME as p
+	ON t.BARCODE = p.BARCODE
+	WHERE  t.FINAL_SALE is not null and t.FINAL_QUANTITY <> "zero" and t.BARCODE is not null 
+)
+SELECT *
+FROM info;
+
+--USER TABLE
+
+SELECT * FROM USER_TAKEHOME
+
+-- Checking for duplicates in ID
+SELECT  ID, count(1) as cnt
+FROM USER_TAKEHOME
+GROUP by ID
+HAVING cnt>1
+ORDER By cnt DESC
+
+--Checking if there are null VALUES
+SELECT *
+FROM USER_TAKEHOME
+WHERE BIRTH_DATE is null
+
+--Checking for particular userID
+SELECT *
+FROM USER_TAKEHOME
+WHERE ID = "60fc1e6deb7585430ff52ee7"
+
+-- INNER JOIN TRANSACTION and USER. Only 262 people have done legible transactions
+SELECT t.*, u.*
+FROM TRANSACTION_TAKEHOME as t
+LEFT JOIN USER_TAKEHOME as u
+ON t.USER_ID = u.ID
+WHERE ID is not null
+
+WITH info AS (
+    SELECT t.*, p.*
+	FROM TRANSACTION_TAKEHOME as t
+	INNER JOIN PRODUCTS_TAKEHOME as p
+	ON t.BARCODE = p.BARCODE
+	WHERE  t.FINAL_SALE is not null and t.FINAL_QUANTITY <> "zero" and t.BARCODE is not null 
+)
+SELECT i.*, u.*
+FROM info as i
+LEFT JOIN USER_TAKEHOME as u
+ON i.USER_ID = u.ID
