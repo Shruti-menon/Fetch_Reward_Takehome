@@ -117,12 +117,36 @@ SELECT *
 FROM USER_TAKEHOME
 WHERE ID = "60fc1e6deb7585430ff52ee7"
 
--- INNER JOIN TRANSACTION and USER. Only 262 people have done legible transactions
+-- INNER JOIN TRANSACTION and USER. Out of 1000000 users, only 262 transactions can be traced.
 SELECT t.*, u.*
 FROM TRANSACTION_TAKEHOME as t
 LEFT JOIN USER_TAKEHOME as u
 ON t.USER_ID = u.ID
 WHERE ID is not null
+
+-- Out of 262 users, 59 users have valid transactions.
+select t.*, p.*, u.*
+from TRANSACTION_TAKEHOME t
+INNER JOIN PRODUCTS_TAKEHOME p
+on t.BARCODE = p.BARCODE
+left join USER_TAKEHOME u
+on t.USER_ID = u.id
+where t.FINAL_SALE is not NULL
+and t.FINAL_QUANTITY <> "zero"
+and t.BARCODE is not null
+and u.id is not null
+
+-- Distinct users with valid transactions
+select count(distinct id)
+from TRANSACTION_TAKEHOME t
+INNER JOIN PRODUCTS_TAKEHOME p
+on t.BARCODE = p.BARCODE
+left join USER_TAKEHOME u
+on t.USER_ID = u.id
+where t.FINAL_SALE is not NULL
+and t.FINAL_QUANTITY <> "zero"
+and t.BARCODE is not null
+and u.id is not null
 
 WITH info AS (
     SELECT t.*, p.*
