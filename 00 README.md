@@ -39,6 +39,6 @@ One interesting trend in the data
 
 Request for action: explain what additional help, info, etc. you need to make sense of the data and resolve any outstanding issues
 
-Refer to the file 05 - Email to the Stakeholder.pdf
+Refer to the file 05 - Email Stakeholder.pdf
 
 
