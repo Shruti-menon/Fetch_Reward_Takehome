@@ -34,7 +34,7 @@ HAVING COUNT(*) > 1;
   SELECT * FROM TRANSACTION_TAKEHOME
   WHERE BARCODE in ("017000329260", "052336919068")
   
-  -- DISTINCT  count of RECEIPT_ID
+  -- DISTINCT  count of RECEIPT_ID (gauge how many unique receipt_id's are present in the transaction)
 SELECT count (DISTINCT RECEIPT_ID) FROM TRANSACTION_TAKEHOME
 
 -- Eliminating null values from FINAL_SALE and zero value from FINAL_QUANTITY
