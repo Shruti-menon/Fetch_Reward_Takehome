@@ -1,7 +1,7 @@
--- PRODUCTS_TAKEHOME TABLE
+-- PRODUCTS_TAKEHOME TABLE (Glance at all the columns)
 SELECT * FROM PRODUCTS_TAKEHOME
 
--- Null barcode values
+-- Null barcode values (To check if there are any values that are null in the column barcode since it is the pk for this table)
 select * 
 from PRODUCTS_TAKEHOME
 where BARCODE is null
