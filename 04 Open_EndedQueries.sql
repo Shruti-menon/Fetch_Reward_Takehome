@@ -70,4 +70,4 @@ select
 	user_count,
 	coalesce (yoy_growth, 0) as yoy_growth_percentage
 from growth_rate
-order by 
+order by 1
