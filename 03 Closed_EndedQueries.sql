@@ -20,6 +20,7 @@ FROM Finaltable
 WHERE (date()-date(BIRTH_DATE))>=21
 GROUP BY 1
 ORDER BY cnt DESC
+LIMIT 5
 
 -- What are the top 5 brands by sales among users that have had their account for at least six months?
   
