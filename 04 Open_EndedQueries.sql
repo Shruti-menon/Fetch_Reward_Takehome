@@ -48,22 +48,26 @@ order by total_sale desc
 limit 1
 
 --At what percent has Fetch grown year over year?
-WITH yearly_user_count AS (
-    SELECT 
-        strftime('%Y', u.CREATED_DATE) AS year,
-        COUNT(*) AS user_count
-    FROM USER_TAKEHOME u
-    GROUP BY 1
+with yearly_user_count as (
+	select 
+		strftime('%Y', u.CREATED_DATE) as year,
+		count(*) as user_count
+	from USER_TAKEHOME u
+	GROUP by 1
+),
+growth_rate as (
+	SELECT
+		year,
+		user_count,
+		lag(user_count) over (order by year) as previous_year_count,
+		round((user_count - lag(user_count) over (order by year)) * 100 /  lag(user_count) over (order by year), 2) as yoy_growth
+		from yearly_user_count
+
 )
-SELECT 
-    y1.year,
-    y1.user_count,
-    COALESCE(
-        ROUND((y1.user_count - 
-            (SELECT y2.user_count FROM yearly_user_count y2 WHERE y2.year = y1.year - 1)) 
-            * 100.0 / 
-            (SELECT y2.user_count FROM yearly_user_count y2 WHERE y2.year = y1.year - 1), 2),
-        0
-    ) AS yoy_growth_percentage
-FROM yearly_user_count y1
-ORDER BY y1.year;
+
+select 
+	year,
+	user_count,
+	coalesce (yoy_growth, 0) as yoy_growth_percentage
+from growth_rate
+order by 
