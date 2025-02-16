@@ -6,7 +6,7 @@ select *
 from PRODUCTS_TAKEHOME
 where BARCODE is null
 
--- Number of null values in category1
+-- Number of null values in category1 (shows limited understanding in the data)
 SELECT BARCODE, CATEGORY_1
 FROM PRODUCTS_TAKEHOME
 WHERE BARCODE is not null and CATEGORY_1 is NULL
