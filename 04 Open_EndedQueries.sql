@@ -40,6 +40,9 @@ from TRANSACTION_TAKEHOME t
 join PRODUCTS_TAKEHOME p
     on t.BARCODE = p.BARCODE
 where p.CATEGORY_2 = "Dips & Salsa"
+AND t.FINAL_SALE is not null 
+AND t.FINAL_QUANTITY <> "zero"
+AND t.BARCODE is not null
 group by 1
 order by total_sale desc
 limit 1
