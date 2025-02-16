@@ -158,5 +158,5 @@ WITH info AS (
 )
 SELECT i.*, u.*
 FROM info as i
-LEFT JOIN USER_TAKEHOME as u
+INNER JOIN USER_TAKEHOME as u
 ON i.USER_ID = u.ID
