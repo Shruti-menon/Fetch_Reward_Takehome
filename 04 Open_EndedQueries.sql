@@ -7,6 +7,9 @@ with user_activity as (
     from USER_TAKEHOME u
     join TRANSACTION_TAKEHOME t
         on u.id = t.USER_ID
+    WHERE t.FINAL_SALE is not null 
+    AND t.FINAL_QUANTITY <> "zero"
+    AND t.BARCODE is not null
     group by 1
 ),
 
