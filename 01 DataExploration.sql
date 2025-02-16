@@ -43,7 +43,7 @@ FROM TRANSACTION_TAKEHOME
 WHERE FINAL_SALE is not null and FINAL_QUANTITY <> "zero"
 ORDER BY RECEIPT_ID
 
---Checking receipt_id's that have barcode value as NULL, this data can be redundant 
+--Checking receipt_id's that have barcode value as NULL, this data can be useless 
 SELECT * 
 FROM TRANSACTION_TAKEHOME
 WHERE FINAL_SALE is not null and FINAL_QUANTITY <> "zero" and BARCODE is null
