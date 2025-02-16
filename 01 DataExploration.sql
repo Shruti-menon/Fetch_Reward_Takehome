@@ -75,7 +75,7 @@ INNER JOIN PRODUCTS_TAKEHOME as p
 ON t.BARCODE = p.BARCODE
 WHERE  t.FINAL_SALE is not null and t.FINAL_QUANTITY <> "zero" and t.BARCODE is not null and RECEIPT_ID = "eb8b58c3-182a-4623-8492-0b8231b85135"
 
---Checking the final duplicate RECEIPT_ID
+--Checking the final duplicate RECEIPT_ID (125 duplicates found but made an assumption that it could be multiple items being scanned in the same receipt)
 SELECT RECEIPT_ID, count(1) as cnt
 FROM TRANSACTION_TAKEHOME as t
 INNER JOIN PRODUCTS_TAKEHOME as p
@@ -107,17 +107,18 @@ GROUP by ID
 HAVING cnt>1
 ORDER By cnt DESC
 
---Checking if there are null VALUES
+--Checking if there are null VALUES (incomplete data)
 SELECT *
 FROM USER_TAKEHOME
 WHERE BIRTH_DATE is null
 
---Checking for particular userID
+--Checking for particular userID (took this from transaction, not all id's present in transaction table are present in user table)
+-- Could not find this user ID from transaction table in user table
 SELECT *
 FROM USER_TAKEHOME
 WHERE ID = "60fc1e6deb7585430ff52ee7"
 
--- INNER JOIN TRANSACTION and USER. Out of 1000000 users, only 262 transactions can be traced.
+-- LEFT JOIN TRANSACTION and USER. Out of 1000000 users, only 262 transactions can be traced.
 SELECT t.*, u.*
 FROM TRANSACTION_TAKEHOME as t
 LEFT JOIN USER_TAKEHOME as u
@@ -129,24 +130,24 @@ select t.*, p.*, u.*
 from TRANSACTION_TAKEHOME t
 INNER JOIN PRODUCTS_TAKEHOME p
 on t.BARCODE = p.BARCODE
-left join USER_TAKEHOME u
+inner join USER_TAKEHOME u
 on t.USER_ID = u.id
 where t.FINAL_SALE is not NULL
 and t.FINAL_QUANTITY <> "zero"
 and t.BARCODE is not null
-and u.id is not null
+-- and u.id is not null
 
 -- Distinct users with valid transactions
 select count(distinct id)
 from TRANSACTION_TAKEHOME t
 INNER JOIN PRODUCTS_TAKEHOME p
 on t.BARCODE = p.BARCODE
-left join USER_TAKEHOME u
+inner join USER_TAKEHOME u
 on t.USER_ID = u.id
 where t.FINAL_SALE is not NULL
 and t.FINAL_QUANTITY <> "zero"
 and t.BARCODE is not null
-and u.id is not null
+-- and u.id is not null
 
 WITH info AS (
     SELECT t.*, p.*
